@@ -51,7 +51,6 @@ public class Factory implements Factorable {
                 .getFile());
 
         final List<Class<?>> classes = getAllClassesByPredicate(baseFile, c -> {
-            System.out.println(c.getModifiers());
             if (c.isAnnotationPresent(Component.class)) {
                 if (Modifier.isInterface(c.getModifiers()) || Modifier.isAbstract(c.getModifiers())) {
                     throw new RuntimeException(c + " should not be abstract or interface");
@@ -109,14 +108,9 @@ public class Factory implements Factorable {
 
     private void createObjectAndReg(Class<?> beanCls, Map<Class<?>, List<Class<?>>> beansTypes)
             throws IllegalAccessException, InstantiationException {
-        Object bean;
 
-        if (!beans.containsKey(beanCls)) {
-            bean = beanCls.newInstance();
-            registerBean(bean, beanCls, beansTypes.get(beanCls));
-        } else {
-            bean = beans.get(beanCls);
-        }
+        final Object bean = beanCls.newInstance();
+        registerBean(bean, beanCls, beansTypes.get(beanCls));
 
         for (Field f : getAllDependsFor(beanCls)) {
             Class<?> depBeanCls = findBeanClsFor(f.getType(), beansTypes);
