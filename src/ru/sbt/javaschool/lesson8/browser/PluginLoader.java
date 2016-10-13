@@ -15,7 +15,7 @@ public class PluginLoader extends URLClassLoader {
 
     @Override
     public Class<?> loadClass(String name) throws ClassNotFoundException {
-        if (name.startsWith("ru.sbt.browser") || name.startsWith("java")) {
+        if (name.startsWith("ru.sbt.javaschool.lesson8") || name.startsWith("java")) {
             return super.loadClass(name);
         }
         return findClass(name);
